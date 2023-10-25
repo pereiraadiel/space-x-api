@@ -2,7 +2,9 @@ import { AxiosInstance } from 'axios';
 import { AxiosService } from './axios.service';
 import { SpaceXRocket } from '../interfaces/spaceXRocket.interface';
 import { SpaceXLaunch } from '../interfaces/spaceXLaunch.interface';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class SpaceXApiService {
   private url: string;
   private instance: AxiosInstance;
