@@ -7,7 +7,7 @@ export class RocketEntity extends Entity {
   externalId: string;
   name: string;
   type: string;
-  launches: LaunchEntity[];
+  launches?: LaunchEntity[];
 
   constructor(
     entity: Omit<RocketEntity, 'id' | 'createdAt' | 'updatedAt' | 'launches'>,
@@ -16,6 +16,6 @@ export class RocketEntity extends Entity {
     super(entity, id);
     Object.assign(this, entity);
 
-    if (!this.launches) this.launches = [];
+    // if (!this.launches) this.launches = [];
   }
 }

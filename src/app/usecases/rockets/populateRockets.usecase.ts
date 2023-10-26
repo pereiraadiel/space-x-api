@@ -25,6 +25,8 @@ export class PopulateRocketsUsecase {
       if (rocketsToStore.length > 0) {
         await this.rocketsService.createRockets({ data: rocketsToStore });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

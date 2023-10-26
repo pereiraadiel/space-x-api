@@ -8,5 +8,5 @@ export interface LaunchesRepository {
   createMany(dto: CreateLaunchesDTO): Promise<number>;
   getMany(dto: GetLaunchesDTO): Promise<LaunchEntity[]>;
   getAll(): Promise<LaunchEntity[]>;
-  count(): Promise<number>;
+  count(dto: GetLaunchesDTO): Promise<number>;
 }

@@ -5,6 +5,7 @@ import { GetLaunchesStatsUsecase } from '../../app/usecases/launches/getLaunches
 import { GetLaunchesWithPaginationUsecase } from '../../app/usecases/launches/getLaunchesWithPagination.usecase';
 import { GetLaunchesQueryRequestDTO } from '../dtos/getLaunchesRequest.dto';
 import { LaunchesResponseDTO } from '../dtos/launchesResponse.dto';
+import { LaunchesByYearResponseDTO } from '../dtos/launchesByYearResponse.dto';
 
 @ApiTags('launches')
 @Controller('launches')
@@ -31,6 +32,13 @@ export class LaunchesController {
   }
 
   @Get('stats')
+  @ApiOkResponse({
+    status: 200,
+    description:
+      'Retorna um objeto contendo o array de resultados além dos atributos para páginação',
+    type: LaunchesByYearResponseDTO,
+    isArray: false,
+  })
   getLaunchesStats() {
     return this.getLaunchesStatsUsecase.handle();
   }

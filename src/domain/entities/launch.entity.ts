@@ -2,10 +2,11 @@ import { Entity } from './entity';
 import { RocketEntity } from './rocket.entity';
 
 export class LaunchEntity extends Entity {
-  youtubeId: string;
-  success: boolean;
-  dateUtc: Date;
   name: string;
+  logoUrl: string;
+  success: boolean;
+  youtubeId: string;
+  dateUtc: Date;
   flightNumber: number;
   externalId: string;
   rocketId: string;

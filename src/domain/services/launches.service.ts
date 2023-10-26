@@ -14,11 +14,16 @@ export class LaunchesService {
   ) {}
 
   async createLaunches(dto: CreateLaunchesDTO) {
-    return await this.launchesRepository.createMany(dto);
+    console.warn('criou launches', dto.data[0]);
+    try {
+      return await this.launchesRepository.createMany(dto);
+    } catch (error) {
+      console.warn(error.message);
+    }
   }
 
-  async countAllLaunches() {
-    return await this.launchesRepository.count();
+  async countLaunches(dto: GetLaunchesDTO) {
+    return await this.launchesRepository.count(dto);
   }
 
   async getAllLaunches() {

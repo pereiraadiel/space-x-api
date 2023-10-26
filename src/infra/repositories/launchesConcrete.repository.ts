@@ -10,14 +10,38 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
   constructor(private readonly database: PrismaService) {}
 
   async createMany(dto: CreateLaunchesDTO): Promise<number> {
-    const launches = await this.database.launch.createMany({
-      data: dto.data,
-    });
+    const launches = await Promise.all(
+      dto.data.map(async (item) => {
+        try {
+          return await this.database.launch.create({
+            data: {
+              dateUtc: item.dateUtc,
+              externalId: item.externalId,
+              flightNumber: item.flightNumber,
+              logoUrl: item.logoUrl,
+              name: item.name,
+              youtubeId: item.youtubeId,
+              success: item.success,
+              rocket: {
+                connect: {
+                  id: item.rocketId,
+                },
+              },
+            },
+          });
+        } catch (error) {
+          return null;
+        }
+      }),
+    );
 
-    return launches.count;
+    return launches.length;
   }
 
   async getMany(dto: GetLaunchesDTO): Promise<LaunchEntity[]> {
+    const skip = (dto.page - 1) * dto.limit;
+    const take = dto.limit;
+
     const launches = await this.database.launch.findMany({
       where: {
         AND: {
@@ -38,6 +62,8 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
           ],
         },
       },
+      skip,
+      take,
       include: {
         rocket: {
           select: {
@@ -66,7 +92,27 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
     return launches as unknown as LaunchEntity[];
   }
 
-  async count(): Promise<number> {
-    return await this.database.launch.count();
+  async count(dto: GetLaunchesDTO): Promise<number> {
+    return await this.database.launch.count({
+      where: {
+        AND: {
+          success: dto.success !== undefined ? dto.success : undefined,
+          OR: [
+            {
+              name: {
+                contains: dto.search,
+              },
+            },
+            {
+              rocket: {
+                name: {
+                  contains: dto.search,
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
   }
 }

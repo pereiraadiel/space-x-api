@@ -22,5 +22,6 @@ import { LaunchesConcreteRepository } from './infra/repositories/launchesConcret
       useClass: LaunchesConcreteRepository,
     },
   ],
+  exports: [LaunchesService, SpaceXApiService],
 })
 export class LaunchesModule {}

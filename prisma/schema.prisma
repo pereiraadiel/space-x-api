@@ -10,12 +10,13 @@ datasource db {
 model Launch {
   id           String   @id @default(uuid()) @map("_id")
   name         String
+  logoUrl      String
   success      Boolean  @default(false)
   dateUtc      DateTime
   flightNumber Int
   youtubeId    String
   externalId   String
-  rocket       Rocket   @relation(fields: [rocketId], references: [id])
+  rocket       Rocket   @relation(fields: [rocketId], references: [externalId])
   rocketId     String
 
   createdAt DateTime  @default(now())
@@ -29,7 +30,7 @@ model Rocket {
   name        String
   description String
   active      Boolean  @default(false)
-  externalId  String
+  externalId  String   @unique
   type        String
   launches    Launch[]
 
