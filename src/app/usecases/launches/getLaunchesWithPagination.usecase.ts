@@ -8,12 +8,11 @@ export class GetLaunchesWithPaginationUsecase {
 
   async handle(dto: GetLaunchesDTO) {
     try {
-      const [launches, totalDocs] = await Promise.all([
+      const [results, totalDocs] = await Promise.all([
         this.launchesService.getLaunches(dto),
         this.launchesService.countAllLaunches(),
       ]);
 
-      const results = launches.launches;
       const totalPages = Math.ceil(totalDocs / dto.limit);
       const page = dto.page;
       const hasNext = page < totalPages;
@@ -27,6 +26,8 @@ export class GetLaunchesWithPaginationUsecase {
         hasNext,
         hasPrev,
       };
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

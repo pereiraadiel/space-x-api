@@ -1,6 +1,10 @@
-import { Repository } from 'typeorm';
-import { EntityRepository } from 'nestjs-typeorm-custom-repository';
-import { RocketEntity } from '../entities/rocket.entity';
+import { RocketEntity } from './../entities/rocket.entity';
+import { CreateRocketsDTO } from '../dtos/createRockets.dto';
 
-@EntityRepository(RocketEntity)
-export class RocketsRepository extends Repository<RocketEntity> {}
+export const ROCKETS_REPOSITORY = 'ROCKETS_REPOSITORY';
+
+export interface RocketsRepository {
+  createMany(dto: CreateRocketsDTO): Promise<number>;
+  getAll(): Promise<RocketEntity[]>;
+  count(): Promise<number>;
+}

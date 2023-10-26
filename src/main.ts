@@ -1,6 +1,11 @@
+import { config } from 'dotenv';
+config();
+
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { LaunchResponseDTO } from './presentation/dtos/launchResponse.dto';
+import { RocketResponseDTO } from './presentation/dtos/rocketResponse.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +17,9 @@ async function bootstrap() {
     .addTag('space-x')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    extraModels: [LaunchResponseDTO, RocketResponseDTO],
+  });
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);

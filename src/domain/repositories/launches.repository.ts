@@ -1,6 +1,12 @@
-import { Repository } from 'typeorm';
-import { EntityRepository } from 'nestjs-typeorm-custom-repository';
-import { LaunchEntity } from '../entities/launch.entity';
+import { LaunchEntity } from './../entities/launch.entity';
+import { CreateLaunchesDTO } from '../dtos/createLaunches.dto';
+import { GetLaunchesDTO } from '../dtos/getLaunches.dto';
 
-@EntityRepository(LaunchEntity)
-export class LaunchesRepository extends Repository<LaunchEntity> {}
+export const LAUNCHES_REPOSITORY = 'LAUNCHES_REPOSITORY';
+
+export interface LaunchesRepository {
+  createMany(dto: CreateLaunchesDTO): Promise<number>;
+  getMany(dto: GetLaunchesDTO): Promise<LaunchEntity[]>;
+  getAll(): Promise<LaunchEntity[]>;
+  count(): Promise<number>;
+}

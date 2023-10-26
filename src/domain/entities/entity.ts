@@ -1,14 +1,8 @@
-import { CreateDateColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 export class Entity {
-  @PrimaryColumn('uuid')
   id: string;
-
-  @CreateDateColumn()
   createdAt?: Date;
-
-  @UpdateDateColumn()
   updatedAt?: Date;
 
   constructor(

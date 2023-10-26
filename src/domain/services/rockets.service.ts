@@ -7,7 +7,7 @@ export class RocketsService {
   constructor(private readonly rocketsRepository: RocketsRepository) {}
 
   async createRockets(dto: CreateRocketsDTO) {
-    return await this.rocketsRepository.save(dto.data);
+    return await this.rocketsRepository.createMany(dto);
   }
 
   async countAllRockets() {
@@ -15,6 +15,6 @@ export class RocketsService {
   }
 
   async getAllRockets() {
-    return await this.rocketsRepository.find();
+    return await this.rocketsRepository.getAll();
   }
 }

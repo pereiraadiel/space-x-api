@@ -3,6 +3,7 @@ export class CreateLaunchDTO {
   success: boolean;
   dateUtc: Date;
   name: string;
+  flightNumber: number;
   externalId: string;
   rocketId: string;
 }

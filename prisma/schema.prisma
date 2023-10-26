@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Launch {
+  id           String   @id @default(uuid()) @map("_id")
+  name         String
+  success      Boolean  @default(false)
+  dateUtc      DateTime
+  flightNumber Int
+  youtubeId    String
+  externalId   String
+  rocket       Rocket   @relation(fields: [rocketId], references: [id])
+  rocketId     String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  @@map("launches")
+}
+
+model Rocket {
+  id          String   @id @default(uuid()) @map("_id")
+  name        String
+  description String
+  active      Boolean  @default(false)
+  externalId  String
+  type        String
+  launches    Launch[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  @@map("rockets")
+}

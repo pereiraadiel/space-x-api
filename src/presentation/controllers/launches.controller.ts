@@ -1,10 +1,13 @@
-import { GetLaunchesStatsUsecase } from '../../app/usecases/launches/getLaunchesStats.usecase';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query } from '@nestjs/common';
 
+import { GetLaunchesStatsUsecase } from '../../app/usecases/launches/getLaunchesStats.usecase';
 import { GetLaunchesWithPaginationUsecase } from '../../app/usecases/launches/getLaunchesWithPagination.usecase';
-import { ApiQuery } from '@nestjs/swagger';
+import { GetLaunchesQueryRequestDTO } from '../dtos/getLaunchesRequest.dto';
+import { LaunchesResponseDTO } from '../dtos/launchesResponse.dto';
 
-@Controller('/launches')
+@ApiTags('launches')
+@Controller('launches')
 export class LaunchesController {
   constructor(
     private readonly getLaunchesWithPaginationUsecase: GetLaunchesWithPaginationUsecase,
@@ -12,15 +15,22 @@ export class LaunchesController {
   ) {}
 
   @Get()
-  @ApiQuery({
-    name: 'Lançamentos',
-    description: 'Retorna os lançamentos de foguetes paginado',
+  @ApiOkResponse({
+    status: 200,
+    description:
+      'Retorna um objeto contendo o array de resultados além dos atributos para páginação',
+    type: LaunchesResponseDTO,
+    isArray: false,
   })
-  getLaunches(@Query() params) {
-    return this.getLaunchesWithPaginationUsecase.handle(params);
+  getLaunches(@Query() { limit, page, search }: GetLaunchesQueryRequestDTO) {
+    return this.getLaunchesWithPaginationUsecase.handle({
+      search,
+      limit: Number(limit),
+      page: Number(page),
+    });
   }
 
-  @Get('/stats')
+  @Get('stats')
   getLaunchesStats() {
     return this.getLaunchesStatsUsecase.handle();
   }
