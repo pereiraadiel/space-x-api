@@ -132,3 +132,7 @@ dist
 # Env var
 .env
 .docker.env
+.compose.env
+
+# Docker volumes
+.volumes/

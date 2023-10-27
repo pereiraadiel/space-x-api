@@ -13,12 +13,7 @@ export class RocketsService {
   ) {}
 
   async createRockets(dto: CreateRocketsDTO) {
-    console.warn('criou rockets');
-    try {
-      return await this.rocketsRepository.createMany(dto);
-    } catch (error) {
-      console.warn(error.message);
-    }
+    return await this.rocketsRepository.createMany(dto);
   }
 
   async countAllRockets() {

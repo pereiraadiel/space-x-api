@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mongodb:
+    image: davybello/mongo-replica-set:5.0.12
+    container_name: mongodb
+    volumes:
+      - './.volumes/.data/mongo1:/var/lib/mongo1'
+      - './.volumes/.data/mongo2:/var/lib/mongo2'
+      - './.volumes/.data/mongo3:/var/lib/mongo3'
+    ports:
+      - 27017:27017
+      - 27018:27018
+      - 27019:27019

@@ -1,10 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBooleanString,
-  IsNumberString,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNumberString, IsOptional, IsString } from 'class-validator';
 
 export class GetLaunchesQueryRequestDTO {
   @IsOptional()
@@ -23,7 +18,7 @@ export class GetLaunchesQueryRequestDTO {
     example: 1,
     default: 1,
     minimum: 1,
-    required: false,
+    required: true,
   })
   page?: number = 1;
 
@@ -34,17 +29,7 @@ export class GetLaunchesQueryRequestDTO {
     example: 5,
     default: 5,
     minimum: 1,
-    required: false,
+    required: true,
   })
   limit?: number = 5;
-
-  @IsOptional()
-  @IsBooleanString()
-  @ApiProperty({
-    description:
-      'retornará somente os registros que a propriedade success corresponder ao valor passado',
-    example: true,
-    required: false,
-  })
-  success?: boolean;
 }

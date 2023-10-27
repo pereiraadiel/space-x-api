@@ -12,6 +12,7 @@ import { ExceptionHandler } from './presentation/handlers/exception.handler';
 import { EnvironmentConfig } from './config/environment.config';
 import { ValidationExceptionHandler } from './presentation/handlers/validationException.handler';
 import { LaunchesByYearResponseDTO } from './presentation/dtos/launchesByYearResponse.dto';
+import { PopulateEmptyDatabaseService } from './infra/services/populateEmptyDatabase.service';
 
 const documentation = (app: INestApplication) => {
   const config = new DocumentBuilder()
@@ -35,6 +36,11 @@ const taskSchedule = (app: INestApplication) => {
   scheduledTaskCron.schedule();
 };
 
+const populateEmptyDatabase = (app: INestApplication) => {
+  const populateEmptyDb = app.get(PopulateEmptyDatabaseService);
+  populateEmptyDb.execute();
+};
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
@@ -46,6 +52,7 @@ async function bootstrap() {
 
   documentation(app);
   taskSchedule(app);
+  populateEmptyDatabase(app);
   await app.listen(EnvironmentConfig.app.port, async () => {
     console.warn(`🚀 server running at ${await app.getUrl()}`);
   });

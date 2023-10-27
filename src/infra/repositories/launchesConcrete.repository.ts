@@ -24,12 +24,13 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
               success: item.success,
               rocket: {
                 connect: {
-                  id: item.rocketId,
+                  externalId: item.rocketId,
                 },
               },
             },
           });
         } catch (error) {
+          console.error(error);
           return null;
         }
       }),
@@ -44,23 +45,20 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
 
     const launches = await this.database.launch.findMany({
       where: {
-        AND: {
-          success: dto.success !== undefined ? dto.success : undefined,
-          OR: [
-            {
+        OR: [
+          {
+            name: {
+              contains: dto.search,
+            },
+          },
+          {
+            rocket: {
               name: {
                 contains: dto.search,
               },
             },
-            {
-              rocket: {
-                name: {
-                  contains: dto.search,
-                },
-              },
-            },
-          ],
-        },
+          },
+        ],
       },
       skip,
       take,
@@ -95,23 +93,20 @@ export class LaunchesConcreteRepository implements LaunchesRepository {
   async count(dto: GetLaunchesDTO): Promise<number> {
     return await this.database.launch.count({
       where: {
-        AND: {
-          success: dto.success !== undefined ? dto.success : undefined,
-          OR: [
-            {
+        OR: [
+          {
+            name: {
+              contains: dto.search,
+            },
+          },
+          {
+            rocket: {
               name: {
                 contains: dto.search,
               },
             },
-            {
-              rocket: {
-                name: {
-                  contains: dto.search,
-                },
-              },
-            },
-          ],
-        },
+          },
+        ],
       },
     });
   }
